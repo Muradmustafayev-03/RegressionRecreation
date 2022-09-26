@@ -1,14 +1,36 @@
+class Monomial:
+    def __init__(self, coefficient, power):
+        self.coefficient = coefficient
+        self.power = power
+
+    def __str__(self):
+        if self.coefficient == 0:
+            return '0'
+        return (str(self.coefficient) if self.coefficient != 1 else '') + 'x^' + \
+               (str(self.power) if self.power != 1 else '')
+
+    def eval(self, x):
+        return self.coefficient * x ** self.power
+
+    def derivative(self, x):
+        return self.coefficient * self.power * x ** (self.power - 1)
+
+
 class Polynomial:
     def __init__(self, coefficients):
         self.coefficients = coefficients
 
+    def __str__(self):
+        n = len(self.coefficients)
+        return ' + '.join([str(Monomial(self.coefficients[i], i)) for i in range(n)[::-1]])
+
     def eval(self, x):
         n = len(self.coefficients)
-        return sum([self.coefficients[i] * x ** i for i in range(n)])
+        return sum([Monomial(self.coefficients[i], i).eval(x) for i in range(n)])
 
     def derivative(self, x):
         n = len(self.coefficients)
-        return sum([self.coefficients[i] * i * x ** (i-1) for i in range(n)])
+        return sum([Monomial(self.coefficients[i], i).derivative(x) for i in range(n)])
 
 
 class LinearFunction(Polynomial):
@@ -20,6 +42,10 @@ class MultivariateFunction:
     def __init__(self, a, coefficients):
         self.a = a
         self.coefficients = coefficients
+
+    def __str__(self):
+        n = len(self.coefficients)
+        return str(self.a) + ' + ' + ' + '.join([f'{self.coefficients[i]}x_{i}' for i in range(n)])
 
     def eval(self, x):
         n = len(self.coefficients)
