@@ -27,7 +27,7 @@ class Polynomial:
 
     def __str__(self):
         n = len(self.coefficients)
-        return ' + '.join([str(Monomial(self.coefficients[i], i)) for i in range(n)[::-1]])
+        return ' + '.join([str(Monomial(self.coefficients[i], i)) for i in range(n)[::-1] if self.coefficients[i] != 0])
 
     def eval(self, x):
         n = len(self.coefficients)
@@ -50,11 +50,11 @@ class MultivariateFunction:
 
     def __str__(self):
         n = len(self.coefficients)
-        return str(self.a) + ' + ' + ' + '.join([f'{self.coefficients[i]}x_{i}' for i in range(n)])
+        return str(self.a) + ' + ' + ' + '.join([f'{self.coefficients[i]} * x_{i}' for i in range(n)])
 
     def eval(self, x):
         n = len(self.coefficients)
         return self.a + sum([self.coefficients[i] * x[i] for i in range(n)])
 
-    def gradient(self, x):
+    def gradient(self):
         return self.coefficients
