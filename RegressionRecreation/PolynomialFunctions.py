@@ -6,14 +6,19 @@ class Monomial:
     def __str__(self):
         if self.coefficient == 0:
             return '0'
-        return (str(self.coefficient) if self.coefficient != 1 else '') + 'x^' + \
-               (str(self.power) if self.power != 1 else '')
+        if self.power == 0:
+            return str(self.coefficient)
+
+        coefficient = '' if self.coefficient == 1 else str(self.coefficient)
+        power = '' if self.power == 1 else '^' + str(self.power)
+
+        return coefficient + 'x' + power
 
     def eval(self, x):
         return self.coefficient * x ** self.power
 
-    def derivative(self, x):
-        return self.coefficient * self.power * x ** (self.power - 1)
+    def derivative(self):
+        return Monomial(self.coefficient * self.power, self.power - 1)
 
 
 class Polynomial:
@@ -28,9 +33,9 @@ class Polynomial:
         n = len(self.coefficients)
         return sum([Monomial(self.coefficients[i], i).eval(x) for i in range(n)])
 
-    def derivative(self, x):
+    def derivative(self):
         n = len(self.coefficients)
-        return sum([Monomial(self.coefficients[i], i).derivative(x) for i in range(n)])
+        return Polynomial([self.coefficients[i] * i for i in range(n)][1:])
 
 
 class LinearFunction(Polynomial):
