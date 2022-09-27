@@ -1,5 +1,5 @@
 class Monomial:
-    def __init__(self, coefficient, power):
+    def __init__(self, coefficient: float, power: int):
         self.coefficient = coefficient
         self.power = power
 
@@ -14,7 +14,7 @@ class Monomial:
 
         return coefficient + 'x' + power
 
-    def eval(self, x):
+    def eval(self, x: float):
         return self.coefficient * x ** self.power
 
     def derivative(self):
@@ -29,7 +29,7 @@ class Polynomial:
         n = len(self.coefficients)
         return ' + '.join([str(Monomial(self.coefficients[i], i)) for i in range(n)[::-1] if self.coefficients[i] != 0])
 
-    def eval(self, x):
+    def eval(self, x: float):
         n = len(self.coefficients)
         return sum([Monomial(self.coefficients[i], i).eval(x) for i in range(n)])
 
@@ -39,7 +39,7 @@ class Polynomial:
 
 
 class LinearFunction(Polynomial):
-    def __init__(self, a, b):
+    def __init__(self, a: float, b: float):
         super().__init__([b, a])
 
 
