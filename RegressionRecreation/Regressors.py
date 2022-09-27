@@ -1,5 +1,6 @@
 from PolynomialFunctions import Polynomial, MultivariateFunction
 from optimisation_algorithms.GradientDescent import BatchGradientDescent
+from abc import abstractmethod
 import numpy as np
 
 
@@ -23,7 +24,9 @@ class Regressor:
         return self
 
     def score(self):
-        pass
+        u = sum((self.__y - self.predict(self.__X)) ** 2)
+        v = sum((self.__y - sum(self.__y) / len(self.__y)) ** 2)
+        return 1 - u/v
 
 
 class PolynomialRegressor(Regressor):
