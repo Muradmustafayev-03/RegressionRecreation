@@ -1,6 +1,6 @@
 from PolynomialFunctions import Polynomial, MultivariateFunction
 from optimisation.iterative_algorithms.GradientDescent import BatchGradientDescent
-from abc import abstractmethod, ABC
+from abc import abstractmethod
 import numpy as np
 
 
@@ -9,7 +9,7 @@ def MSE(hypothesis, x, y):
     return sum([(hypothesis(x[i]) - y[i]) ** 2 for i in range(m)]) / (2 * m)
 
 
-class Regressor(ABC):
+class Regressor:
     def __init__(self):
         self.__X: np.array = None
         self.__y: np.array = None
@@ -57,7 +57,7 @@ class PolynomialRegressor(Regressor):
         self.set_params(bgd.optimize())
 
     def predict(self, X: np.array):
-        return np.apply_along_axis(Polynomial(self.__coefficients).eval, 0, X)
+        return np.apply_along_axis(Polynomial(self.get_params()).eval, 0, X)
 
 
 class LinearRegressor(PolynomialRegressor):
