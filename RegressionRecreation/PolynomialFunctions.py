@@ -44,17 +44,16 @@ class LinearFunction(Polynomial):
 
 
 class MultivariateFunction:
-    def __init__(self, a, coefficients):
-        self.a = a
+    def __init__(self, coefficients):
         self.coefficients = coefficients
 
     def __str__(self):
         n = len(self.coefficients)
-        return str(self.a) + ' + ' + ' + '.join([f'{self.coefficients[i]} * x_{i}' for i in range(n)])
+        return str(self.coefficients[0]) + ' + ' + ' + '.join([f'{self.coefficients[i]} * x_{i}' for i in range(n)[1:]])
 
     def eval(self, x):
         n = len(self.coefficients)
-        return self.a + sum([self.coefficients[i] * x[i] for i in range(n)])
+        return self.coefficients[0] + sum([self.coefficients[i] * x[i-1] for i in range(n)[1:]])
 
     def gradient(self):
-        return self.coefficients
+        return self.coefficients[1:]
