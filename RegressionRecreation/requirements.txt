@@ -1,7 +1,7 @@
 click==8.1.3
 colorama==0.4.5
 numpy==1.23.3
-optimisation-algorithms==1.1.0
+optimisation-algorithms==1.1.1
 pip==22.2.2
 setuptools==65.4.0
 wheel==0.37.1
