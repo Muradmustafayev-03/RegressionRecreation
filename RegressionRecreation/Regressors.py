@@ -45,16 +45,19 @@ class PolynomialRegressor(Regressor):
     def __MSE_gradient(self, coefficients) -> np.array:
         m = len(self.__y)
         hypothesis = Polynomial(coefficients).eval
+        # print(np.array([sum([(hypothesis(self.__X[i]) - self.__y[i]) * self.__X[i] ** j for i in range(m)]) / m
+        #                  for j in range(self.d)]))
         return \
             np.array([sum([(hypothesis(self.__X[i]) - self.__y[i]) * self.__X[i] ** j for i in range(m)]) / m
                          for j in range(self.d)])
 
-    def fit(self, X: np.array, y: np.array):
+    def fit(self, X: np.array, y: np.array, max_iterations: int = 10000, alpha: float = 0.02, tol: float = 10 ** (-20),
+                 randomize: bool = False):
         self.__X = X
         self.__y = y
 
         bgd = BatchGradientDescent(self.__MSE_gradient, self.d)
-        self.set_params(bgd.optimize())
+        self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
 
     def predict(self, X: np.array):
         return np.apply_along_axis(Polynomial(self.get_params()).eval, 0, X)
