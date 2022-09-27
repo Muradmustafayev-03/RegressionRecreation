@@ -23,9 +23,9 @@ class Regressor:
         self.__coefficients = params
         return self
 
-    def score(self):
-        u = sum((self.__y - self.predict(self.__X)) ** 2)
-        v = sum((self.__y - sum(self.__y) / len(self.__y)) ** 2)
+    def calculate_score(self, X, y):
+        u = sum((y - self.predict(X)) ** 2)
+        v = sum((y - sum(y) / len(y)) ** 2)
         return 1 - u/v
 
 
@@ -54,6 +54,9 @@ class PolynomialRegressor(Regressor):
 
     def predict(self, X: np.array):
         return np.apply_along_axis(Polynomial(self.get_params()).eval, 0, X)
+
+    def score(self):
+        return super().calculate_score(self.__X, self.__y)
 
 
 class LinearRegressor(PolynomialRegressor):
@@ -87,3 +90,6 @@ class MultivariateRegressor(Regressor):
 
     def predict(self, X: np.array) -> np.array:
         return np.apply_along_axis(MultivariateFunction(self.get_params()).eval, 1, X)
+
+    def score(self):
+        return super().calculate_score(self.__X, self.__y)
