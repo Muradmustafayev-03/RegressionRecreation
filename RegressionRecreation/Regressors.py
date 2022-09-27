@@ -22,9 +22,6 @@ class Regressor:
         self.__coefficients = params
         return self
 
-    def get_hypothetical_equation(self):
-        return Polynomial(self.get_params())
-
     def score(self):
         pass
 
@@ -32,6 +29,9 @@ class Regressor:
 class PolynomialRegressor(Regressor):
     def __init__(self, d: int):
         super().__init__(d)
+
+    def get_hypothetical_equation(self):
+        return Polynomial(self.get_params())
 
     def __MSE_gradient(self, coefficients) -> np.array:
         m = len(self.__y)
@@ -60,14 +60,17 @@ class LinearRegressor(PolynomialRegressor):
 
 class MultivariateRegressor(Regressor):
     def __init__(self, d: int):
-        super().__init__(d)
+        super().__init__(d+1)
+
+    def get_hypothetical_equation(self):
+        return MultivariateFunction(self.get_params())
 
     def __MSE_gradient(self, coefficients) -> np.array:
         m = len(self.__y)
         hypothesis = MultivariateFunction(coefficients).eval
         return np.array([sum([(hypothesis(self.__X[i]) - self.__y[i]) for i in range(m)]) / m
                          if j == 0 else
-                         sum([(hypothesis(self.__X[i]) - self.__y[i]) * self.__X[i] for i in range(m)]) / m
+                         sum([(hypothesis(self.__X[i]) - self.__y[i]) * self.__X[i][j-1] for i in range(m)]) / m
                          for j in range(self.d)])
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
@@ -80,4 +83,4 @@ class MultivariateRegressor(Regressor):
         return self
 
     def predict(self, X: np.array) -> np.array:
-        return np.apply_along_axis(MultivariateFunction(self.get_params()).eval, 0, X)
+        return np.apply_along_axis(MultivariateFunction(self.get_params()).eval, 1, X)
