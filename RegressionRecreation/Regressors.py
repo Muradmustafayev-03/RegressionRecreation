@@ -1,6 +1,5 @@
 from PolynomialFunctions import Polynomial, MultivariateFunction
 from optimisation_algorithms.GradientDescent import BatchGradientDescent
-from abc import abstractmethod
 import numpy as np
 
 
@@ -28,6 +27,12 @@ class Regressor:
         v = sum((y - sum(y) / len(y)) ** 2)
         return 1 - u/v
 
+    def do_fit(self, mse_gradient, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
+                 randomize: bool = False):
+        bgd = BatchGradientDescent(mse_gradient, self.d)
+        self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
+        return self
+
 
 class PolynomialRegressor(Regressor):
     def __init__(self, d: int):
@@ -45,11 +50,8 @@ class PolynomialRegressor(Regressor):
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
                  randomize: bool = False):
-        self.__X = X
-        self.__y = y
-
-        bgd = BatchGradientDescent(self.__MSE_gradient, self.d)
-        self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
+        self.__X, self.__y = X, y
+        super(PolynomialRegressor, self).do_fit(self.__MSE_gradient, max_iterations, alpha, tol, randomize)
         return self
 
     def predict(self, X: np.array):
@@ -81,11 +83,8 @@ class MultivariateRegressor(Regressor):
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
                  randomize: bool = False):
-        self.__X = X
-        self.__y = y
-
-        bgd = BatchGradientDescent(self.__MSE_gradient, self.d)
-        self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
+        self.__X, self.__y = X, y
+        super(MultivariateRegressor, self).do_fit(self.__MSE_gradient, max_iterations, alpha, tol, randomize)
         return self
 
     def predict(self, X: np.array) -> np.array:
