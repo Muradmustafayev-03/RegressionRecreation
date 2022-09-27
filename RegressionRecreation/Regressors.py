@@ -1,4 +1,4 @@
-from PolynomialFunctions import Polynomial
+from PolynomialFunctions import Polynomial, MultivariateFunction
 from optimisation.iterative_algorithms.GradientDescent import BatchGradientDescent
 from abc import abstractmethod, ABC
 import numpy as np
@@ -42,7 +42,7 @@ class PolynomialRegressor(Regressor):
         super().__init__()
         self.d = d
 
-    def __MSE_gradient(self, coefficients):
+    def __MSE_gradient(self, coefficients) -> np.array:
         m = len(self.__y)
         hypothesis = Polynomial(coefficients).eval
         return \
@@ -66,4 +66,16 @@ class LinearRegressor(PolynomialRegressor):
 
 
 class MultivariateRegressor(Regressor):
-    pass
+    def __init__(self, d: int):
+        super().__init__()
+        self.d = d
+
+    def __MSE_gradient(self, coefficients) -> np.array:
+        m = len(self.__y)
+        hypothesis = MultivariateFunction(coefficients[0], coefficients[1:]).eval
+
+    def fit(self, X: np.array, y: np.array):
+        pass
+
+    def predict(self, X: np.array) -> np.array:
+        pass
