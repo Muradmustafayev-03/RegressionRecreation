@@ -8,6 +8,11 @@ def MSE(hypothesis, x, y):
     return sum([(hypothesis(x[i]) - y[i]) ** 2 for i in range(m)]) / (2 * m)
 
 
+def NormalEquation(X: np.matrix, y: np.matrix):
+    X = np.c_[np.ones(len(X)), X]
+    return np.array(np.linalg.inv(X.transpose() * X) * X.transpose() * y.transpose()).flatten()
+
+
 class Regressor:
     def __init__(self, d: int, polynomial_function, axis):
         self.d = d
