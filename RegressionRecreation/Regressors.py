@@ -10,7 +10,7 @@ def MSE(hypothesis, x, y):
 
 def NormalEquation(X: np.matrix, y: np.matrix):
     X = np.c_[np.ones(len(X)), X]
-    return np.array(np.linalg.inv(X.transpose() * X) * X.transpose() * y.transpose()).flatten()
+    return (np.linalg.inv(X.transpose().dot(X)).dot(X.transpose())).dot(y.transpose())
 
 
 class Regressor:
@@ -33,8 +33,7 @@ class Regressor:
                 randomize: bool = False):
         self._X, self._y = X, y
         bgd = BatchGradientDescent(mse_gradient, self.d)
-        self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
-        return self
+        return self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
 
     def predict(self, X: np.array):
         return np.apply_along_axis(self.__PolynomialFunction(self.get_params()).eval, self.__axis, X)
@@ -42,7 +41,7 @@ class Regressor:
     def _calculate_score(self, X, y):
         u = sum((y - self.predict(X)) ** 2)
         v = sum((y - sum(y) / len(y)) ** 2)
-        return 1 - u/v
+        return 1 - u / v
 
     def get_hypothetical_equation(self):
         return self.__PolynomialFunction(self.get_params())
@@ -57,10 +56,10 @@ class PolynomialRegressor(Regressor):
         hypothesis = Polynomial(coefficients).eval
         return \
             np.array([sum([(hypothesis(self._X[i]) - self._y[i]) * self._X[i] ** j for i in range(m)]) / m
-                         for j in range(self.d)])
+                      for j in range(self.d)])
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
-                 randomize: bool = False):
+            randomize: bool = False):
         self._do_fit(self.__MSE_gradient, X, y, max_iterations, alpha, tol, randomize)
         return self
 
@@ -75,20 +74,24 @@ class LinearRegressor(PolynomialRegressor):
 
 class MultivariateRegressor(Regressor):
     def __init__(self, d: int):
-        super().__init__(d+1, MultivariateFunction, 1)
+        super().__init__(d + 1, MultivariateFunction, 1)
 
     def __MSE_gradient(self, coefficients) -> np.array:
         m = len(self._y)
         hypothesis = MultivariateFunction(coefficients).eval
         return np.array([sum([(hypothesis(self._X[i]) - self._y[i]) for i in range(m)]) / m
                          if j == 0 else
-                         sum([(hypothesis(self._X[i]) - self._y[i]) * self._X[i][j-1] for i in range(m)]) / m
+                         sum([(hypothesis(self._X[i]) - self._y[i]) * self._X[i][j - 1] for i in range(m)]) / m
                          for j in range(self.d)])
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
-                 randomize: bool = False):
-        self._do_fit(self.__MSE_gradient, X, y, max_iterations, alpha, tol, randomize)
-        return self
+            randomize: bool = False):
+        if self.d < 10 ^ 6:
+            try:
+                return self.set_params(NormalEquation(X, y))
+            except np.linalg.LinAlgError:
+                return self._do_fit(self.__MSE_gradient, X, y, max_iterations, alpha, tol, randomize)
+        return self._do_fit(self.__MSE_gradient, X, y, max_iterations, alpha, tol, randomize)
 
     def score(self):
         return self._calculate_score(self._X, self._y)
