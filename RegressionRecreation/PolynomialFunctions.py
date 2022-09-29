@@ -1,4 +1,22 @@
 class Monomial:
+    """
+    Represents a monomial function: f(x) = k*x^n
+
+    Attributes
+    ----------
+    coefficient: float
+        Coefficient k
+    power: int
+        Power n
+
+    Methods
+    -------
+    eval(self, x: float)
+        Returns the value of f(x)
+
+    derivative(self)
+        Returns derivative monomial
+    """
     def __init__(self, coefficient: float, power: int):
         self.coefficient = coefficient
         self.power = power
@@ -22,6 +40,22 @@ class Monomial:
 
 
 class Polynomial:
+    """
+    Represents a polynomial function: f(x) = sum(k*x^n) for n in (0, k)
+
+    Attributes
+    ----------
+    coefficients: iterable
+        Coefficients of monomials of each of the powers respectively
+
+    Methods
+    -------
+    eval(self, x: float)
+        Returns the value of f(x)
+
+    derivative(self)
+        Returns derivative polynomial
+    """
     def __init__(self, coefficients):
         self.coefficients = coefficients
 
