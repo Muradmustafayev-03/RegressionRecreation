@@ -16,6 +16,8 @@ class Monomial:
 
     derivative(self)
         Returns the derivative monomial
+
+    :return:
     """
     def __init__(self, coefficient: float, power: int):
         self.coefficient = coefficient
@@ -55,6 +57,8 @@ class Polynomial:
 
     derivative(self)
         Returns the derivative polynomial
+
+    :return:
     """
     def __init__(self, coefficients):
         self.coefficients = coefficients
@@ -90,6 +94,8 @@ class LinearFunction(Polynomial):
 
     derivative(self)
         Returns the derivative of the function
+
+    :return:
     """
     def __init__(self, a: float, b: float):
         super().__init__([b, a])
@@ -111,6 +117,8 @@ class MultivariateFunction:
 
     gradient(self)
         Returns the gradient of the function
+
+    :return:
     """
     def __init__(self, coefficients):
         self.coefficients = coefficients

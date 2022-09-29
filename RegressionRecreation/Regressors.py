@@ -14,6 +14,17 @@ def NormalEquation(X: np.matrix, y: np.matrix):
 
 
 class Regressor:
+    """
+    Parent class for different kinds of regressors
+
+    Attributes
+    ----------
+
+    Methods
+    -------
+
+    :return:
+    """
     def __init__(self, d: int, polynomial_function, axis):
         self.d = d + 1
         self._X: np.array = None
@@ -63,7 +74,7 @@ class PolynomialRegressor(Regressor):
 
 class LinearRegressor(PolynomialRegressor):
     def __init__(self):
-        super().__init__(2)
+        super().__init__(1)
 
 
 class MultivariateRegressor(Regressor):
