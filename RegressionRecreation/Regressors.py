@@ -145,12 +145,31 @@ class Regressor:
         """
         return np.apply_along_axis(self.__PolynomialFunction(self.get_params()).eval, self.__axis, X)
 
-    def score(self):
-        u = sum((self._y - self.predict(self._X)) ** 2)
-        v = sum((self._y - sum(self._y) / len(self._y)) ** 2)
+    def score(self, X, y):
+        """
+        Return the coefficient of determination of the prediction
+
+        Parameters
+        ---------
+        X: {array-like, sparse matrix} of shape (n_samples, n_features)
+            Test samples
+        y: array-like of shape (n_samples,) or (n_samples, n_targets)
+            True values for X
+
+        Return
+        ------
+        :return: float: coefficient of determination of the prediction
+        """
+        u = sum((y - self.predict(X)) ** 2)
+        v = sum((y - sum(y) / len(y)) ** 2)
         return 1 - u / v
 
     def get_hypothetical_equation(self):
+        """
+        Returns hypothetical equation to estimate the data
+
+        :return: object: estimator function object
+        """
         return self.__PolynomialFunction(self.get_params())
 
 
