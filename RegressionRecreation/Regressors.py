@@ -35,15 +35,12 @@ class Regressor:
     set_params(self, params: numpy.array)
         Sets coefficients to the function
 
-    _MSE_gradient(self, coefficients)
-        Gradient of the Mean Squared Error function, predefined for each particular subclass
-
     fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
             randomize: bool = False)
         Fit the function to the given data
 
     def predict(self, X: numpy.array)
-        Predict using the linear model
+        Predict using the estimator
 
     def score(self)
         Return the coefficient of determination of the prediction
@@ -88,7 +85,20 @@ class Regressor:
         self.__coefficients = params
         return self
 
-    def _MSE_gradient(self, coefficients) -> np.array: pass
+    def _MSE_gradient(self, coefficients) -> np.array:
+        """
+        Gradient of the Mean Squared Error function, predefined for each particular subclass
+
+        Parameters
+        ---------
+        coefficients: numpy.array
+            coefficients of the function
+
+        Return
+        ------
+        :return: numpy.array
+            Gradient of the Mean Squared Error function
+        """
 
     def fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
             randomize: bool = False):
@@ -120,6 +130,19 @@ class Regressor:
         return self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
 
     def predict(self, X: np.array):
+        """
+        Predict using the estimator
+
+        Parameters
+        ---------
+        X: {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training data
+
+        Return
+        ------
+        :return: numpy.array of shape (n_samples,)
+            Predicted values
+        """
         return np.apply_along_axis(self.__PolynomialFunction(self.get_params()).eval, self.__axis, X)
 
     def score(self):
