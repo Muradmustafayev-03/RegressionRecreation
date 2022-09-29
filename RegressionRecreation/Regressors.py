@@ -29,10 +29,10 @@ class Regressor:
 
     Methods
     -------
-    get_params(self)
+    get_weights(self)
         Returns the coefficients of the function after fit
 
-    set_params(self, params: numpy.array)
+    set_weights(self, params: numpy.array)
         Sets coefficients to the function
 
     fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
@@ -69,14 +69,14 @@ class Regressor:
         self.__PolynomialFunction = polynomial_function
         self.__axis = axis
 
-    def get_params(self) -> np.array:
+    def get_weights(self) -> np.array:
         """
         Returns the coefficients of the function after fit
         :return: np.array: coefficients
         """
         return self.__coefficients
 
-    def set_params(self, params: np.array):
+    def set_weights(self, params: np.array):
         """
         Sets coefficients to the function
         :param params: coefficients of the function
@@ -127,7 +127,7 @@ class Regressor:
         """
         self._X, self._y = X, y
         bgd = BatchGradientDescent(self._MSE_gradient, self.d)
-        return self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
+        return self.set_weights(bgd.optimize(max_iterations, alpha, tol, randomize))
 
     def predict(self, X: np.array):
         """
@@ -143,7 +143,7 @@ class Regressor:
         :return: numpy.array of shape (n_samples,)
             Predicted values
         """
-        return np.apply_along_axis(self.__PolynomialFunction(self.get_params()).eval, self.__axis, X)
+        return np.apply_along_axis(self.__PolynomialFunction(self.get_weights()).eval, self.__axis, X)
 
     def score(self, X, y):
         """
@@ -170,7 +170,7 @@ class Regressor:
 
         :return: object: estimator function object
         """
-        return self.__PolynomialFunction(self.get_params())
+        return self.__PolynomialFunction(self.get_weights())
 
 
 class PolynomialRegressor(Regressor):
@@ -183,10 +183,10 @@ class PolynomialRegressor(Regressor):
 
        Methods
        -------
-       get_params(self)
+       get_weights(self)
            Returns the coefficients of the function after fit
 
-       set_params(self, params: numpy.array)
+       set_weights(self, params: numpy.array)
            Sets coefficients to the function
 
        _MSE_gradient(self, coefficients)
@@ -228,10 +228,10 @@ class LinearRegressor(PolynomialRegressor):
 
            Methods
            -------
-           get_params(self)
+           get_weights(self)
                Returns the coefficients of the function after fit
 
-           set_params(self, params: numpy.array)
+           set_weights(self, params: numpy.array)
                Sets coefficients to the function
 
            _MSE_gradient(self, coefficients)
@@ -266,10 +266,10 @@ class MultivariateRegressor(Regressor):
 
            Methods
            -------
-           get_params(self)
+           get_weights(self)
                Returns the coefficients of the function after fit
 
-           set_params(self, params: numpy.array)
+           set_weights(self, params: numpy.array)
                Sets coefficients to the function
 
            _MSE_gradient(self, coefficients)
@@ -306,7 +306,7 @@ class MultivariateRegressor(Regressor):
         if self.d < 10 ^ 6:
             try:
                 self._X, self._y = X, y
-                return self.set_params(NormalEquation(X, y))
+                return self.set_weights(NormalEquation(X, y))
             except np.linalg.LinAlgError:
                 pass
         return super().fit(X, y, max_iterations, alpha, tol, randomize)
