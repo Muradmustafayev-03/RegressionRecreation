@@ -22,6 +22,8 @@ class Regressor:
     d: int
         Number of coefficients,
         either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+    polynomial_function: type
+        One of the classes from PolynomialFunctions.py module, that defines the estimator
     axis: int
         Axis on which to apply the function, predefined for each particular subclass
 
@@ -52,6 +54,17 @@ class Regressor:
     :return:
     """
     def __init__(self, d: int, polynomial_function, axis: int):
+        """
+        Parameters
+        ---------
+        d: int
+            Number of coefficients,
+            either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+        polynomial_function: type
+            One of the classes from PolynomialFunctions.py module, that defines the estimator
+        axis: int
+            Axis on which to apply the function, predefined for each particular subclass
+        """
         self.d = d + 1
         self._X: np.array = None
         self._y: np.array = None
@@ -60,9 +73,18 @@ class Regressor:
         self.__axis = axis
 
     def get_params(self) -> np.array:
+        """
+        Returns the coefficients of the function after fit
+        :return: np.array: coefficients
+        """
         return self.__coefficients
 
     def set_params(self, params: np.array):
+        """
+        Sets coefficients to the function
+        :param params: coefficients of the function
+        :return: self: object
+        """
         self.__coefficients = params
         return self
 
@@ -70,6 +92,29 @@ class Regressor:
 
     def fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
             randomize: bool = False):
+        """
+        Fit the function to the given data
+
+        Parameters
+        ---------
+        X: {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training data
+        y: array-like of shape (n_samples,) or (n_samples, n_targets)
+            Target values
+        max_iterations: int
+            Maximal number of iterations
+        alpha: float
+            Descent change rate
+        tol: float
+            Tolerance number, maximal number to be considered as 0
+        randomize: bool
+            If True, randomizes change rate each step
+
+        Return
+        ------
+        :return: self: object
+            Fitted Estimator
+        """
         self._X, self._y = X, y
         bgd = BatchGradientDescent(self._MSE_gradient, self.d)
         return self.set_params(bgd.optimize(max_iterations, alpha, tol, randomize))
