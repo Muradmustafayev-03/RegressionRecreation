@@ -87,6 +87,39 @@ class Regressor:
 
 
 class PolynomialRegressor(Regressor):
+    """
+       Attributes
+       ----------
+       d: int
+           Number of coefficients,
+           either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+
+       Methods
+       -------
+       get_params(self)
+           Returns the coefficients of the function after fit
+
+       set_params(self, params: numpy.array)
+           Sets coefficients to the function
+
+       _MSE_gradient(self, coefficients)
+           Gradient of the Mean Squared Error function
+
+       fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
+               randomize: bool = False)
+           Fit the function to the given data
+
+       def predict(self, X: numpy.array)
+           Predict using the linear model
+
+       def score(self)
+           Returns the coefficient of determination of the prediction
+
+       get_hypothetical_equation(self)
+           Returns hypothetical equation to estimate the data
+
+       :return:
+       """
     def __init__(self, d: int):
         super().__init__(d, Polynomial, 0)
 
@@ -99,11 +132,77 @@ class PolynomialRegressor(Regressor):
 
 
 class LinearRegressor(PolynomialRegressor):
+    """
+           Attributes
+           ----------
+           d: int
+               Number of coefficients,
+               either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+
+           Methods
+           -------
+           get_params(self)
+               Returns the coefficients of the function after fit
+
+           set_params(self, params: numpy.array)
+               Sets coefficients to the function
+
+           _MSE_gradient(self, coefficients)
+               Gradient of the Mean Squared Error function
+
+           fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
+                   randomize: bool = False)
+               Fit the function to the given data
+
+           def predict(self, X: numpy.array)
+               Predict using the linear model
+
+           def score(self)
+               Returns the coefficient of determination of the prediction
+
+           get_hypothetical_equation(self)
+               Returns hypothetical equation to estimate the data
+
+           :return:
+           """
     def __init__(self):
         super().__init__(1)
 
 
 class MultivariateRegressor(Regressor):
+    """
+           Attributes
+           ----------
+           d: int
+               Number of coefficients,
+               either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+
+           Methods
+           -------
+           get_params(self)
+               Returns the coefficients of the function after fit
+
+           set_params(self, params: numpy.array)
+               Sets coefficients to the function
+
+           _MSE_gradient(self, coefficients)
+               Gradient of the Mean Squared Error function
+
+           fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
+                   randomize: bool = False)
+               Fit the function to the given data
+
+           def predict(self, X: numpy.array)
+               Predict using the linear model
+
+           def score(self)
+               Returns the coefficient of determination of the prediction
+
+           get_hypothetical_equation(self)
+               Returns hypothetical equation to estimate the data
+
+           :return:
+           """
     def __init__(self, d: int):
         super().__init__(d, MultivariateFunction, 1)
 
