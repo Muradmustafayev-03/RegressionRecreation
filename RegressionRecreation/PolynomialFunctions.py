@@ -15,7 +15,7 @@ class Monomial:
         Returns the value of f(x)
 
     derivative(self)
-        Returns derivative monomial
+        Returns the derivative monomial
     """
     def __init__(self, coefficient: float, power: int):
         self.coefficient = coefficient
@@ -54,7 +54,7 @@ class Polynomial:
         Returns the value of f(x)
 
     derivative(self)
-        Returns derivative polynomial
+        Returns the derivative polynomial
     """
     def __init__(self, coefficients):
         self.coefficients = coefficients
@@ -73,11 +73,45 @@ class Polynomial:
 
 
 class LinearFunction(Polynomial):
+    """
+    Represents a linear as a particular case of polynomial functions: f(x) = a*x + b
+
+    Attributes
+    ----------
+    a: float
+        Coefficient of x
+    b: float
+        Free member of polynomial
+
+    Methods
+    -------
+    eval(self, x: float)
+        Returns the value of f(x)
+
+    derivative(self)
+        Returns the derivative of the function
+    """
     def __init__(self, a: float, b: float):
         super().__init__([b, a])
 
 
 class MultivariateFunction:
+    """
+    Represents a multivariate linear function: f(x) = sum(k*x^n) for n in (0, k)
+
+    Attributes
+    ----------
+    coefficients: iterable
+        Coefficients of monomials of each of the powers respectively
+
+    Methods
+    -------
+    eval(self, x: float)
+        Returns the value of f(x)
+
+    gradient(self)
+        Returns the gradient of the function
+    """
     def __init__(self, coefficients):
         self.coefficients = coefficients
 
