@@ -1,4 +1,4 @@
-from src.Regressors import PolynomialRegressor
+from regression.Regressors import PolynomialRegressor
 import numpy as np
 
 x = np.arange(10)

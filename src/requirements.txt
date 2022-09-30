@@ -3,5 +3,5 @@ colorama==0.4.5
 numpy==1.23.3
 optimisation-algorithms==1.1.2
 pip==22.2.2
-setuptools==65.4.0
+setuptools==65.4.1
 wheel==0.37.1
