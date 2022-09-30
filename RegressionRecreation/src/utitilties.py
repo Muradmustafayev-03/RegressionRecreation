@@ -11,7 +11,7 @@ def MSE(hypothesis, x, y):
     :return: float: mean squared error of the hypothetical function
     """
     m = len(y)
-    return sum([(hypothesis(x[i]) - y[i]) ** 2 for i in range(m)]) / (2 * m)
+    return sum(np.array([(hypothesis(x[i]) - y[i]) ** 2 for i in range(m)]).flatten()) / (2 * m)
 
 
 def NormalEquation(X: np.matrix, y: np.matrix):

@@ -1,6 +1,6 @@
 from optimisation_algorithms.GradientDescent import BatchGradientDescent
-from PolynomialFunctions import Polynomial, MultivariateFunction
-from utitilties import NormalEquation
+from src.PolynomialFunctions import Polynomial, MultivariateFunction
+from .utitilties import NormalEquation
 import numpy as np
 
 

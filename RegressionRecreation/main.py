@@ -1,4 +1,4 @@
-from Regressors import PolynomialRegressor, MultivariateRegressor, NormalEquation
+from src.Regressors import PolynomialRegressor
 import numpy as np
 
 x = np.arange(10)
