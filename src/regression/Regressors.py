@@ -1,5 +1,5 @@
 from optimisation_algorithms.GradientDescent import BatchGradientDescent
-from regression.PolynomialFunctions import Polynomial, MultivariateFunction
+from .PolynomialFunctions import Polynomial, MultivariateFunction
 from .utitilties import NormalEquation
 import numpy as np
 
