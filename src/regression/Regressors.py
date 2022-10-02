@@ -152,6 +152,7 @@ class Regressor:
         ------
         :return: float: coefficient of determination of the prediction
         """
+        y = np.ndarray.flatten(y)
         u = sum((y - self.predict(X)) ** 2)
         v = sum((y - sum(y) / len(y)) ** 2)
         return 1 - u / v

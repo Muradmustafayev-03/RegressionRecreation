@@ -1,7 +1,17 @@
 import numpy as np
 
 
-def MSE(hypothesis, x, y):
+def MAE(real, prediction):
+    difference = abs(real - prediction)
+    return sum(difference) / len(difference)
+
+
+def MSE(real, prediction):
+    difference = abs(real - prediction)
+    return sum(difference ** 2) / len(difference)
+
+
+def MSE_from_hypothesis(hypothesis, x, y):
     """
     Mean squared error function
 
