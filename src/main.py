@@ -1,10 +1,9 @@
-from regression.Regressors import PolynomialRegressor
+from regression.Regressors import MultivariateRegressor
 import numpy as np
 
-x = np.arange(10)
-y = np.arange(10) * 1.5 + 8
-r = PolynomialRegressor(1)
-r.fit(x, y)
-print(r.predict(np.arange(10, 15)))
-print(r.get_hypothetical_equation())
-print(r.score(x, y))
+X = np.random.rand(1000, 4)
+y = np.random.rand(1000, 1)
+
+m = MultivariateRegressor(4)
+m.fit(X, y, max_iterations=1000)
+print(m.get_hypothetical_equation())

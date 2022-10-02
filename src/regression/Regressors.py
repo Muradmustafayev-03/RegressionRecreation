@@ -41,6 +41,7 @@ class Regressor:
 
     :return:
     """
+
     def __init__(self, d: int, polynomial_function, axis: int):
         """
         Parameters
@@ -198,6 +199,7 @@ class PolynomialRegressor(Regressor):
 
        :return:
        """
+
     def __init__(self, d: int):
         super().__init__(d, Polynomial, 0)
 
@@ -243,6 +245,7 @@ class LinearRegressor(PolynomialRegressor):
 
            :return:
            """
+
     def __init__(self):
         super().__init__(1)
 
@@ -281,16 +284,18 @@ class MultivariateRegressor(Regressor):
 
            :return:
            """
+
     def __init__(self, d: int):
         super().__init__(d, MultivariateFunction, 1)
 
     def _MSE_gradient(self, coefficients) -> np.array:
         m = len(self._y)
         hypothesis = MultivariateFunction(coefficients).eval
-        return np.array([sum([(hypothesis(self._X[i]) - self._y[i]) for i in range(m)]) / m
-                         if j == 0 else
-                         sum([(hypothesis(self._X[i]) - self._y[i]) * self._X[i][j - 1] for i in range(m)]) / m
-                         for j in range(self.d)])
+
+        return np.ndarray.flatten(np.array(
+            [sum([(hypothesis(self._X[i]) - self._y[i]) for i in range(m)])] +
+            [sum([(hypothesis(self._X[i]) - self._y[i]) * self._X[i][j - 1] for i in range(m)])
+             for j in range(1, self.d)]) / m)
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
             randomize: bool = False):
