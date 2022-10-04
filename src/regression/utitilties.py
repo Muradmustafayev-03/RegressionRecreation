@@ -33,4 +33,4 @@ def NormalEquation(X: np.matrix, y: np.matrix):
     :return: matrix: optimised coefficients for x-values
     """
     X = np.c_[np.ones(len(X)), X]
-    return np.ndarray.flatten((np.linalg.inv(X.transpose().dot(X)).dot(X.transpose())).dot(y))
+    return np.ndarray.flatten(np.array((np.linalg.inv(X.transpose().dot(X)).dot(X.transpose())).dot(y)))
