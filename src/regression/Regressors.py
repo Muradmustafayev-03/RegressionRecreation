@@ -214,77 +214,96 @@ class PolynomialRegressor(Regressor):
 
 class LinearRegressor(PolynomialRegressor):
     """
-           Attributes
-           ----------
-           d: int
-               Number of coefficients,
-               either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+    Attributes
+    ----------
+    d: int
+        Number of coefficients,
+        either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
 
-           Methods
-           -------
-           get_weights(self)
-               Returns the coefficients of the function after fit
+    Methods
+    -------
+    get_weights(self)
+        Returns the coefficients of the function after fit
 
-           set_weights(self, params: numpy.array)
-               Sets coefficients to the function
+    set_weights(self, params: numpy.array)
+        Sets coefficients to the function
 
-           _MSE_gradient(self, coefficients)
-               Gradient of the Mean Squared Error function
+    _MSE_gradient(self, coefficients)
+        Gradient of the Mean Squared Error function
 
-           fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
-                   randomize: bool = False)
-               Fit the function to the given data
+    fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
+            randomize: bool = False)
+        Fit the function to the given data
 
-           def predict(self, X: numpy.array)
-               Predict using the linear model
+    def predict(self, X: numpy.array)
+        Predict using the linear model
 
-           def score(self)
-               Returns the coefficient of determination of the prediction
+    def score(self)
+        Returns the coefficient of determination of the prediction
 
-           get_hypothetical_equation(self)
-               Returns hypothetical equation to estimate the data
+    get_hypothetical_equation(self)
+        Returns hypothetical equation to estimate the data
 
-           :return:
-           """
+    :return:
+    """
 
     def __init__(self):
         super().__init__(1)
 
+    def fit(self, X: np.array, y: np.array, **kwargs):
+        """
+        Fit the function to the given data
+
+        Parameters
+        ---------
+        X: {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training data
+        y: array-like of shape (n_samples,) or (n_samples, n_targets)
+            Target values
+
+        Return
+        ------
+        :return: self: object
+            Fitted Estimator
+        """
+        self._X, self._y = X, y
+        return self.set_weights(NormalEquation(X, y))
+
 
 class MultivariateRegressor(Regressor):
     """
-           Attributes
-           ----------
-           d: int
-               Number of coefficients,
-               either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
+    Attributes
+    ----------
+    d: int
+        Number of coefficients,
+        either the degree of polynomial or the dimension of the input matrix in Multivariate Regression
 
-           Methods
-           -------
-           get_weights(self)
-               Returns the coefficients of the function after fit
+    Methods
+    -------
+    get_weights(self)
+        Returns the coefficients of the function after fit
 
-           set_weights(self, params: numpy.array)
-               Sets coefficients to the function
+    set_weights(self, params: numpy.array)
+        Sets coefficients to the function
 
-           _MSE_gradient(self, coefficients)
-               Gradient of the Mean Squared Error function
+    _MSE_gradient(self, coefficients)
+        Gradient of the Mean Squared Error function
 
-           fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
-                   randomize: bool = False)
-               Fit the function to the given data
+    fit(self, X, y, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
+            randomize: bool = False)
+        Fit the function to the given data
 
-           def predict(self, X: numpy.array)
-               Predict using the linear model
+    def predict(self, X: numpy.array)
+        Predict using the linear model
 
-           def score(self)
-               Returns the coefficient of determination of the prediction
+    def score(self)
+        Returns the coefficient of determination of the prediction
 
-           get_hypothetical_equation(self)
-               Returns hypothetical equation to estimate the data
+    get_hypothetical_equation(self)
+        Returns hypothetical equation to estimate the data
 
-           :return:
-           """
+    :return:
+    """
 
     def __init__(self, d: int):
         super().__init__(d, MultivariateFunction, 1)
