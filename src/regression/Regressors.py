@@ -300,7 +300,7 @@ class MultivariateRegressor(Regressor):
 
     def fit(self, X: np.array, y: np.array, max_iterations: int = 100000, alpha: float = 0.02, tol: float = 10 ** (-20),
             randomize: bool = False):
-        if self.d < 10 ^ 6:
+        if self.d < 10 ** 6:
             try:
                 self._X, self._y = X, y
                 return self.set_weights(NormalEquation(X, y))
